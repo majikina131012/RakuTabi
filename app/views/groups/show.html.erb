@@ -1,0 +1,16 @@
+<%= @group.name %>
+
+<h2>メンバーを追加</h2>
+<%= form_with model: @user, url: group_users_path(@group.id), local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :name, "ユーザー名", class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <%= f.submit "追加する", class: "btn btn-primary btn-block" %>
+<% end %>
+
+<h2>メンバー一覧</h2>
+<% @group.users.each do |user| %>
+  <%= user.name %>
+<% end %>
