@@ -14,3 +14,48 @@
 <% @group.users.each do |user| %>
   <%= user.name %>
 <% end %>
+
+<h2>支払い</h2>
+
+<%= form_with model: @expense, url: group_expenses_path(@group.id), local: true do |f| %>
+
+  <div class="form-group">
+    <%= f.label :description, "支払いの内容" %>
+    <%= f.text_field :description, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :amount, "金額" %>
+    <%= f.number_field :amount, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :payer_id, "支払った人" %>
+    <%= f.select :payer_id, options_from_collection_for_select(@members, :id, :name), {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :members, "割り勘するメンバー" %><br>
+    <%= f.collection_check_boxes(:share_ids, @members, :id, :name) do |b| %>
+      <%= b.check_box(class: "form-check-input") %>
+      <%= b.label(class: "form-check-label") %>
+    <% end %>
+  </div>
+
+  <%= f.submit "登録", class: "btn btn-primary btn-block" %>
+
+<% end %>
+
+<h2>精算結果</h2>
+<% if @settlements.present? %>
+  <ul class="list-group">
+    <% @settlements.each do |s| %>
+      <li class="list-group-item">
+        <%= s[:from].name %> が <%= s[:to].name %> に
+        <%= number_to_currency(s[:amount].ceil, unit: "¥", precision: 0) %> 支払う
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>精算は必要ありません。</p>
+<% end %>
