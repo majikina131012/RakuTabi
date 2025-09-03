@@ -36,8 +36,8 @@
 
   <div class="form-group">
     <%= f.label :members, "割り勘するメンバー" %><br>
-    <%= f.collection_check_boxes(:share_ids, @members, :id, :name) do |b| %>
-      <%= b.check_box(class: "form-check-input") %>
+    <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
+      <%= b.check_box(class: "form-check-input", checked: true) %>
       <%= b.label(class: "form-check-label") %>
     <% end %>
   </div>
@@ -45,6 +45,25 @@
   <%= f.submit "登録", class: "btn btn-primary btn-block" %>
 
 <% end %>
+
+<h2>精算履歴</h2>
+<% if @expenses.any? %>
+  <% @expenses.each do |expense| %>
+
+    <%= expense.payer.name %>が
+
+    <% expense.shares.map(&:user).uniq.each do |user| %>
+      <%= user.name %>に
+    <% end %>
+
+
+    <%= number_to_currency(expense.amount.round, unit: "¥", precision: 0) %>支払った<br>
+  
+  <% end %>
+<% else %>
+  精算履歴はありません
+<% end %>
+
 
 <h2>精算結果</h2>
 <% if @settlements.present? %>
@@ -59,3 +78,5 @@
 <% else %>
   <p>精算は必要ありません。</p>
 <% end %>
+
+<%= link_to "精算をリセット", destroy_all_group_expenses_path(@group.id), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger btn-block mb-2" %>

@@ -4,10 +4,9 @@ class ExpensesController < ApplicationController
     @group = Group.find(params[:group_id])
     @expense = Expense.new(expense_params)
     @expense.group_id = @group.id
-    user_ids = @group.user_ids
-    if @expense.save
-      # user_ids = params[:expense][:user_ids].reject(&:blank?).map(&:to_i)
-      share_amount = @expense.amount / user_ids.count
+    user_ids = params[:expense][:user_ids].reject(&:blank?).map(&:to_i)
+    if @expense.save!
+      share_amount = @expense.amount / user_ids.size.to_f
       user_ids.each do |user_id|
         @expense.shares.create!(
           user_id: user_id,
@@ -20,6 +19,12 @@ class ExpensesController < ApplicationController
     else
       redirect_to error_path
     end
+  end
+
+  def destroy_all
+    @group = Group.find(params[:group_id])
+    @group.expenses.destroy_all
+    redirect_to group_path(@group.id), notice: "全ての精算データをリセットしました"
   end
   
   private

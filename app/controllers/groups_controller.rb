@@ -13,12 +13,17 @@ class GroupsController < ApplicationController
     end
   end
 
+  def index
+    @groups = Group.all
+  end
+
   def show
     @group = Group.find(params[:id])
     @user = User.new
     @expense = Expense.new
     @members = @group.users
     @settlements = @group.optimized_settlements
+    @expenses = @group.expenses
   end
 
   private

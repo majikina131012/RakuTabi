@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   root to: 'groups#new'
   resources :groups, only: [:create, :index, :show, :destroy] do
     resources :users, only: [:create, :edit, :destroy]
-    resources :expenses, only: [:create, :edit, :destroy]
+    resources :expenses, only: [:create, :edit, :destroy] do
+      collection do
+        delete :destroy_all
+      end
+    end
   end
 end
