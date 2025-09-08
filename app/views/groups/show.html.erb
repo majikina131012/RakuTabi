@@ -16,6 +16,14 @@
 <% end %>
 
 <h2>支払い</h2>
+<% if @expense.errors.any? %>
+  <%= @expense.errors.count %>件のエラーが発生しました
+  <ul>
+    <% @expense.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
 
 <%= form_with model: @expense, url: group_expenses_path(@group.id), local: true do |f| %>
 

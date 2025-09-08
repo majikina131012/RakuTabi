@@ -5,7 +5,8 @@ class ExpensesController < ApplicationController
     @expense = Expense.new(expense_params)
     @expense.group_id = @group.id
     user_ids = params[:expense][:user_ids].reject(&:blank?).map(&:to_i)
-    if @expense.save!
+    if @expense.save
+      flash[:notice] = "登録しました"
       share_amount = @expense.amount / user_ids.size.to_f
       user_ids.each do |user_id|
         @expense.shares.create!(
@@ -36,6 +37,7 @@ class ExpensesController < ApplicationController
     @group = Group.find(params[:group_id])
     @expense =  Expense.find(params[:id])
     if @expense.update(expense_params)
+      flash[:notice] = "変更しました"
       redirect_to group_path(@group.id)
     else
       render :edit
