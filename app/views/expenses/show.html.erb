@@ -1,0 +1,20 @@
+<h2>精算履歴</h2>
+<% if @expenses.any? %>
+  <% @expenses.each do |expense| %>
+
+    <%= expense.payer.name %>が
+
+    <% expense.shares.map(&:user).uniq.each do |user| %>
+      <%= user.name %>に
+    <% end %>
+
+    <%= number_to_currency(expense.amount.round, unit: "¥", precision: 0) %>支払った
+
+    <%= link_to edit_group_expense_path(@group.id,expense.id) do %>
+      編集する
+    <% end %>
+  
+  <% end %>
+<% else %>
+  精算履歴はありません
+<% end %>

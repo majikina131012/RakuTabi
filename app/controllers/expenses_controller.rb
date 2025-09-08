@@ -21,6 +21,11 @@ class ExpensesController < ApplicationController
     end
   end
 
+  def show
+    @group = Group.find(params[:group_id])
+    @expense =  Expense.find(params[:id])
+  end
+
   def edit
     @group = Group.find(params[:group_id])
     @members = @group.users
