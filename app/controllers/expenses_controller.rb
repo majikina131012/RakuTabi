@@ -21,6 +21,22 @@ class ExpensesController < ApplicationController
     end
   end
 
+  def edit
+    @group = Group.find(params[:group_id])
+    @members = @group.users
+    @expense =  Expense.find(params[:id])
+  end
+  
+  def update
+    @group = Group.find(params[:group_id])
+    @expense =  Expense.find(params[:id])
+    if @expense.update(expense_params)
+      redirect_to group_path(@group.id)
+    else
+      render :edit
+    end
+  end
+
   def destroy_all
     @group = Group.find(params[:group_id])
     @group.expenses.destroy_all

@@ -1,0 +1,29 @@
+<h2>内容の編集</h2>
+<%= form_with model: @expense, url: group_expense_path(@group.id,@expense.id), local: true do |f| %>
+
+  <div class="form-group">
+    <%= f.label :description, "支払いの内容" %>
+    <%= f.text_field :description, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :amount, "金額" %>
+    <%= f.number_field :amount, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :payer_id, "支払った人" %>
+    <%= f.select :payer_id, options_from_collection_for_select(@members, :id, :name), {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :members, "割り勘するメンバー" %><br>
+    <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
+      <%= b.check_box(class: "form-check-input", checked: true) %>
+      <%= b.label(class: "form-check-label") %>
+    <% end %>
+  </div>
+
+  <%= f.submit "変更する", class: "btn btn-primary btn-block" %>
+
+<% end %>
