@@ -76,14 +76,11 @@
         <% end %>
       </li>
     </ul>
-  
+  <%= link_to "履歴を更に見る", group_expenses_path(@group.id) %>
   <% end %>
 <% else %>
   精算履歴はありません
 <% end %>
-
-<%= link_to "履歴を更に見る", group_expenses_path(@group.id) %>
-
 
 <h2>精算結果</h2>
 <% if @settlements.present? %>
