@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   root to: 'groups#new'
   resources :groups, only: [:create, :index, :show, :destroy] do
     resources :users, only: [:create, :edit, :destroy]
+    resources :events, only: [:index]
   end
 end

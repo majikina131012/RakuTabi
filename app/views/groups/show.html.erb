@@ -14,3 +14,6 @@
 <% @group.users.each do |user| %>
   <%= user.name %>
 <% end %>
+
+<h2>イベント日程調整</h2>
+<%= link_to "日程調整する", group_events_path(@group.id)%>
