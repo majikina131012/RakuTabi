@@ -22,9 +22,9 @@ class ExpensesController < ApplicationController
     end
   end
 
-  def show
+  def index
     @group = Group.find(params[:group_id])
-    @expense =  Expense.find(params[:id])
+    @expenses =  @group.expenses
   end
 
   def edit

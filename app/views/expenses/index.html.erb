@@ -1,6 +1,9 @@
-<h2>精算履歴</h2>
+<h2>精算履歴一覧</h2>
 <% if @expenses.any? %>
+
   <% @expenses.each do |expense| %>
+    <ul>
+      <li>
 
     <%= expense.payer.name %>が
 
@@ -13,6 +16,9 @@
     <%= link_to edit_group_expense_path(@group.id,expense.id) do %>
       編集する
     <% end %>
+
+      </li>
+    </ul>
   
   <% end %>
 <% else %>

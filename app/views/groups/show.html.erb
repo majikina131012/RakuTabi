@@ -58,26 +58,31 @@
 
 <% end %>
 
-<h2>精算履歴</h2>
+<h2>精算履歴（最新3件）</h2>
 <% if @expenses.any? %>
   <% @expenses.each do |expense| %>
+    <ul>
+      <li>
+        <%= expense.payer.name %>が
 
-    <%= expense.payer.name %>が
+        <% expense.shares.map(&:user).uniq.each do |user| %>
+          <%= user.name %>に
+        <% end %>
 
-    <% expense.shares.map(&:user).uniq.each do |user| %>
-      <%= user.name %>に
-    <% end %>
+        <%= number_to_currency(expense.amount.round, unit: "¥", precision: 0) %>支払った
 
-    <%= number_to_currency(expense.amount.round, unit: "¥", precision: 0) %>支払った
-
-    <%= link_to edit_group_expense_path(@group.id,expense.id) do %>
-      編集する
-    <% end %>
+        <%= link_to edit_group_expense_path(@group.id,expense.id) do %>
+          編集する
+        <% end %>
+      </li>
+    </ul>
   
   <% end %>
 <% else %>
   精算履歴はありません
 <% end %>
+
+<%= link_to "履歴を更に見る", group_expenses_path(@group.id) %>
 
 
 <h2>精算結果</h2>

@@ -23,7 +23,7 @@ class GroupsController < ApplicationController
     @expense = Expense.new
     @members = @group.users
     @settlements = @group.optimized_settlements
-    @expenses = @group.expenses
+    @expenses = @group.expenses.order(created_at: :desc).limit(3)
   end
 
   private
