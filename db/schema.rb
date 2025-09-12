@@ -19,15 +19,6 @@ ActiveRecord::Schema.define(version: 2025_09_09_023203) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "expenses", force: :cascade do |t|
-    t.integer "group_id"
-    t.integer "payer_id"
-    t.string "description"
-    t.float "amount"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -44,17 +35,6 @@ ActiveRecord::Schema.define(version: 2025_09_09_023203) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "shares", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "expense_id"
-    t.float "burden_amount"
-    t.float "must_pay"
-    t.float "pay"
-    t.integer "pay_to_user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.integer "group_id"
@@ -66,6 +46,8 @@ ActiveRecord::Schema.define(version: 2025_09_09_023203) do
     t.integer "user_id"
     t.integer "event_id"
     t.integer "status"
+    t.string "name"
+    t.date "date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
