@@ -5,6 +5,6 @@ class Vote < ApplicationRecord
   validates :status, presence: true
   validates :name, presence: true
 
-  enum status: { ok: 0, maybe: 1, no: 2 }
+  enum status: { circle: 0, triangle: 1, cross: 2 } 
 
 end

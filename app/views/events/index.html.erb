@@ -2,4 +2,4 @@
   let eventData = <%= raw @events.to_json %>;
 </script>
 
-<div id="calendar"></div>
+<div id="calendar" data-group-id="<%= @group.id %>"></div>
