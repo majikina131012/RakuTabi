@@ -1,7 +1,6 @@
 class Vote < ApplicationRecord
   belongs_to :user
-  belongs_to :event
 
-  validates :status, presence: true
+  enum status: { "◯": 0, "△": 1, "✕": 2 }
 
 end
