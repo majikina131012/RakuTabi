@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
 
   def index
-    @group = Group.find(params[:group_id])
-    @events = @group.events
+    # @group = Group.find(params[:group_id])
+    @events = Event.all
     respond_to do |format|
       format.html
       format.json { render 'calendar' }

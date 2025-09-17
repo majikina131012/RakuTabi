@@ -1,11 +1,6 @@
-json.array!(@event.votes) do |vote|
-  json.id vote.id
-  json.title "#{vote.name} (#{vote.status})"
-  json.start vote.date
-  json.allDay true
-  json.color case vote.status
-             when "ok" then "green"
-             when "maybe" then "orange"
-             when "no" then "red"
-             end
+json.array!(@events) do |event|
+  json.id event.id
+  json.title event.title
+  json.start event.start_time.in_time_zone('Tokyo')
+  json.end event.end_time.in_time_zone('Tokyo')
 end

@@ -1,3 +1,5 @@
-<h1><%= @event.title %></h1>
+<script>
+  let eventData = <%= raw @events.to_json %>;
+</script>
 
-<div id="calendar" data-event-id="<%= @event.id %>"></div>
+<div id="calendar"></div>
