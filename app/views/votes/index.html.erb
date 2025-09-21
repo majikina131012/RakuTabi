@@ -9,11 +9,10 @@
         <%= vote.user.name %> : <%= vote.status %>
       </div>
     <% end %>
-
-    <%= link_to "投票する", new_group_vote_path(@group, day: date) %>
   </div>
 <% end %>
 
+    <%= link_to "投票する", new_group_vote_path(@group) %>
 
 <h2>◯が多い日 TOP3</h2>
 <ol>
