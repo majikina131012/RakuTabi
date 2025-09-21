@@ -1,23 +1,20 @@
-<h1>新規投票</h1>
-<%= form_with model: @vote, url: group_votes_path(@group.id) do |f| %>
-  <div class="day form-group">
-    <%= f.label :day, '日付' %>
-    <%= f.text_field :day, class: 'form-control', value: @day, readonly: true %>
+<h1>複数日投票</h1>
+
+<%= form_with url: group_votes_path(@group), method: :post do %>
+  <div>
+    <%= label_tag :user_name, "名前" %>
+    <%= text_field_tag :user_name %>
   </div>
 
-  <div class="user-name form-group">
-    <%= label_tag :user_name, '名前' %>
-    <%= text_field_tag :user_name, "", class: "form-control" %>
-  </div>
+  <%= month_calendar do |date| %>
+    <div class="day-cell">
+      <%= date.day %><br>
 
-  <div class="status form-group">
-    <%= f.label :status, '投票内容' %>
-    <%= f.select :status, Vote.statuses.keys.map { |s| [s, s] }, {}, class: "form-control" %>
-  </div>
+      <%= radio_button_tag "days[#{date}]", "◯" %> ○
+      <%= radio_button_tag "days[#{date}]", "✕" %> ✕
+      <%= radio_button_tag "days[#{date}]", "△" %> △
+    </div>
+  <% end %>
 
-  <div class="submit">
-    <%= f.submit value: '投票する', class: 'btn btn-primary mx-auto d-block' %>
-  </div>
+  <%= submit_tag "投票する" %>
 <% end %>
-
-<%= link_to '戻る', group_votes_path(@group.id) %>
