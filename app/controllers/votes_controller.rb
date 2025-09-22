@@ -60,11 +60,11 @@ class VotesController < ApplicationController
                 .where("day < ?", Date.current >> 3)
                 .order(day: :desc)
 
-   @top_votes = Vote.where(status: "◯")
-                 .select("day, COUNT(*) as votes_count")
-                 .group(:day)
-                 .order("votes_count DESC")
-                 .limit(3)
+    @top_votes = Vote.where(group_id: @group.id, status: "◯")
+    .select("day, COUNT(*) as votes_count")
+    .group(:day)
+    .order("votes_count DESC")
+    .limit(3)
 end
 
   private
