@@ -11,7 +11,7 @@
       <%= user.name %>に
     <% end %>
 
-    <%= number_to_currency(expense.amount.round, unit: "¥", precision: 0) %>支払った
+    <%= number_to_currency(expense.amount.round, unit: "円", precision: 0) %>支払った
 
     <%= link_to edit_group_expense_path(@group.id,expense.id) do %>
       編集する
@@ -24,3 +24,5 @@
 <% else %>
   精算履歴はありません
 <% end %>
+
+<%= link_to "戻る", group_path(@group.id) %>

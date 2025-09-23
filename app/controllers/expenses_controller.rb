@@ -43,6 +43,7 @@ class ExpensesController < ApplicationController
       flash[:notice] = "変更しました"
       redirect_to group_path(@group.id)
     else
+      @members = @group.users
       render :edit
     end
   end

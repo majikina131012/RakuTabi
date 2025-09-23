@@ -26,6 +26,9 @@ class GroupsController < ApplicationController
     @expenses = @group.expenses.order(created_at: :desc).limit(3)
   end
 
+  def error
+  end
+
   private
 
   def group_params
