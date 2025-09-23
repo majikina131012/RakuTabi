@@ -1,6 +1,6 @@
 <h2>持ち物一覧</h2>
 
-<%= form_with url: bulk_update_group_item_checks_path(@group), method: :patch, local: true do |f| %>
+<%= form_with url: group_bulk_update_item_checks_path(@group.id), method: :patch, local: true do |f| %>
   <table border="1">
     <thead>
       <tr>
