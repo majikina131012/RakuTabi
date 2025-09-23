@@ -10,17 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_09_22_125645) do
+ActiveRecord::Schema.define(version: 2025_09_23_102906) do
 
-  create_table "events", force: :cascade do |t|
-    t.integer "group_id"
-    t.string "title"
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "groups", force: :cascade do |t|
-    t.string "name"
+  create_table "item_checks", force: :cascade do |t|
+    t.integer "item_id"
+    t.integer "user_id"
+    t.boolean "is_ok", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -33,31 +34,9 @@ ActiveRecord::Schema.define(version: 2025_09_22_125645) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "schedules", force: :cascade do |t|
-    t.integer "event_id"
-    t.date "date"
-    t.string "remarks"
-    t.time "start_time"
-    t.time "end_time"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.integer "group_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "votes", force: :cascade do |t|
-    t.integer "group_id"
-    t.integer "user_id"
-    t.integer "event_id"
-    t.integer "status"
-    t.date "day"
-    t.string "time"
-    t.datetime "start_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

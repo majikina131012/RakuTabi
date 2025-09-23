@@ -1,27 +1,37 @@
 <h2>持ち物一覧</h2>
 
-
-<table>
-  <thead>
-    <tr>
-      <th>持ち物</th>
-      <th>持ってくる人</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <% @items.each do |item| %>
-    <tbody>
+<%= form_with url: bulk_update_group_item_checks_path(@group), method: :patch, local: true do |f| %>
+  <table border="1">
+    <thead>
       <tr>
-        <td><%= item.name %></td>
-        <td>ユーザー名</td>
-        <td><%= link_to "編集", edit_group_item_path(@group.id, item.id) %>
-        <td><%= link_to "削除", group_item_path(@group.id, item.id), method: :delete, "data-confirm" => "本当に削除しますか？" %></td>
+        <th>持ち物</th>
+        <% @group.users.each do |user| %>
+          <th><%= user.name %></th>
+        <% end %>
       </tr>
+    </thead>
+    <tbody>
+      <% @items.each do |item| %>
+        <tr>
+          <td><%= item.name %></td>
+          <% @group.users.each do |user| %>
+            <% item_check = ItemCheck.find_by(item: item, user: user) %>
+            <td>
+              <%= f.check_box "item_checks[][id]", { checked: item_check.is_ok }, item_check.id, nil %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
     </tbody>
-  <% end %>
-</table>
+  </table>
 
+  <%= f.submit "チェックを入れる", class: "btn btn-primary" %>
+<% end %>
+
+<%= form_with model: Item.new, url: group_items_path(@group), local: true do |f| %>
+  <%= f.text_field :name, placeholder: "新しい持ち物" %>
+  <%= f.submit "追加" %>
+<% end %>
 <%= form_with model: @item, url: group_items_path(@group.id), local: true do |f| %>
 
   <div class="form-group">

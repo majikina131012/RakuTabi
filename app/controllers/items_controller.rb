@@ -5,6 +5,13 @@ class ItemsController < ApplicationController
     @group = Group.find(params[:group_id])
     @item.group_id = @group.id
     if @item.save
+      @group.users.each do |user|
+        ItemCheck.create!(
+          item_id: @item.id,
+          user_id: user.id,
+          is_ok: false
+        )
+      end
       redirect_to group_items_path(@group.id)
     else
       @items = Group.items

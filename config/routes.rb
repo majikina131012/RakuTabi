@@ -5,4 +5,7 @@ Rails.application.routes.draw do
     resources :users, only: [:create, :edit, :destroy]
     resources :items, only: [:create, :index, :edit, :update, :destroy]
   end
+  patch '/groups/:group_id/items/:item_id/users/:user_id/check', 
+      to: 'item_checks#update', 
+      as: :group_item_user_check
 end
