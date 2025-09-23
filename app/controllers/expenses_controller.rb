@@ -5,6 +5,7 @@ class ExpensesController < ApplicationController
     @expense = Expense.new(expense_params)
     @expense.group_id = @group.id
     user_ids = params[:expense][:user_ids].reject(&:blank?).map(&:to_i)
+  
     if @expense.save
       flash[:notice] = "登録しました"
       share_amount = @expense.amount / user_ids.size.to_f
@@ -18,7 +19,9 @@ class ExpensesController < ApplicationController
       end
       redirect_to group_path(@group.id)
     else
-      redirect_to error_path
+      @expenses = @group.expenses.order(created_at: :desc).limit(3)
+      @members = @group.users
+      render "groups/show"
     end
   end
 

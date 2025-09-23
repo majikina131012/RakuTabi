@@ -1,0 +1,22 @@
+ja:
+  activerecord:
+    attributes:
+      expense:
+        amount: "金額"
+        payer_id: "支払った人"
+        description: "支払い内容"
+        user_ids: "割り勘するメンバー"
+    errors:
+      models:
+        expense:
+          attributes:
+            amount:
+              blank: "を入力してください"
+            payer_id:
+              blank: "を選択してください"
+            description:
+              blank: "を入力してください"
+      messages:
+        blank: "を入力してください"
+        too_short: "は%{count}文字以上で入力してください"
+        too_long: "は%{count}文字以内で入力してください"

@@ -16,14 +16,16 @@
 <% end %>
 
 <h2>支払い</h2>
-<% if @expense.errors.any? %>
-  <%= @expense.errors.count %>件のエラーが発生しました
-  <ul>
-    <% @expense.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-  </ul>
-<% end %>
+  <% if @expense.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@expense.errors.count, "エラー") %>があります:</h4>
+      <ul>
+        <% @expense.errors.each do |attribute, message| %>
+          <li><%= @expense.class.human_attribute_name(attribute) + message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
 <%= form_with model: @expense, url: group_expenses_path(@group.id), local: true do |f| %>
 
