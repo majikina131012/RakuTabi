@@ -78,12 +78,12 @@
         <% end %>
       </li>
     </ul>
-  <%= link_to "履歴を更に見る", group_expenses_path(@group.id) %>
   <% end %>
 <% else %>
   精算履歴はありません
 <% end %>
-
+  <%= link_to "履歴を更に見る", group_expenses_path(@group.id) %>
+  
 <h2>精算結果</h2>
 <% if @settlements.present? %>
   <ul class="list-group">
@@ -98,4 +98,4 @@
   <p>精算は必要ありません。</p>
 <% end %>
 
-<%= link_to "精算をリセット", destroy_all_group_expenses_path(@group.id), method: :delete, data: { confirm: '本当に全てリセットしますか？' }, class: "btn btn-danger btn-block mb-2" %>
+<%= link_to "精算をリセット", destroy_all_group_expenses_path(@group.id), method: :delete, data: { confirm: '本当に全てリセットしますか？' } %>

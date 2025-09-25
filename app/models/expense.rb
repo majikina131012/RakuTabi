@@ -5,7 +5,7 @@ class Expense < ApplicationRecord
   has_many :shares, dependent: :destroy
   has_many :users, through: :shares
 
-  validates :payer_id, presence: true
+
   validates :group_id, presence: true
   validates :amount, presence: true
   validates :description, presence: true

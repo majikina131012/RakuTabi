@@ -2,8 +2,8 @@ ja:
   activerecord:
     attributes:
       expense:
+        payer: "支払った人"
         amount: "金額"
-        payer_id: "支払った人"
         description: "支払い内容"
         user_ids: "割り勘するメンバー"
     errors:

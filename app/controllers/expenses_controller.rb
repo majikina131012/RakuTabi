@@ -48,6 +48,13 @@ class ExpensesController < ApplicationController
     end
   end
 
+  def destroy
+    group = Group.find(params[:group_id])
+    expense = Expense.find(params[:id])
+    expense.destroy
+    redirect_to group_path(group.id)
+  end
+
   def destroy_all
     @group = Group.find(params[:group_id])
     @group.expenses.destroy_all

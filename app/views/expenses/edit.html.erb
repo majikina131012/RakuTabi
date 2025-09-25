@@ -37,3 +37,5 @@
   <%= f.submit "変更する", class: "btn btn-primary btn-block" %>
 
 <% end %>
+
+<%= link_to "削除する", group_expense_path(@group.id, @expense.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
