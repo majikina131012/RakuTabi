@@ -30,6 +30,9 @@ class ExpensesController < ApplicationController
     @expenses =  @group.expenses
   end
 
+  def detail
+  end
+
   def edit
     @group = Group.find(params[:group_id])
     @members = @group.users
