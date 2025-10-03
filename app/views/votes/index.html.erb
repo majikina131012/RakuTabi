@@ -14,9 +14,11 @@
 
     <%= link_to "投票する", new_group_vote_path(@group) %>
 
-<h2>◯が多い日 TOP3</h2>
+<h2>◯が多い日</h2>
 <ol>
   <% @top_votes.each do |vote| %>
     <li><%= vote.day %>（◯ <%= vote.votes_count %> 件）</li>
   <% end %>
 </ol>
+
+<%= link_to "グループに戻る", group_path(@group.id) %>
