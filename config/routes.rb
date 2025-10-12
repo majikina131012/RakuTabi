@@ -3,6 +3,14 @@ Rails.application.routes.draw do
   root to: 'groups#new'
   resources :groups, only: [:create, :index, :show, :destroy] do
     resources :users, only: [:create, :edit, :destroy]
+    get 'detail', to: 'expenses#detail'
+    resources :expenses, only: [:create, :index, :edit, :update, :destroy] do
+      collection do
+        delete :destroy_all
+      end
+    end
+  end
+  match "*path", to: "groups#error", via: :all
     resources :items, only: [:create, :index, :edit, :update, :destroy]
     patch 'bulk_update_item_checks', to: 'item_checks#bulk_update'
   end
