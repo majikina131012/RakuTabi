@@ -17,6 +17,13 @@ ActiveRecord::Schema.define(version: 2025_09_02_155009) do
     t.integer "payer_id"
     t.string "description"
     t.float "amount"
+ActiveRecord::Schema.define(version: 2025_09_23_102906) do
+
+  create_table "events", force: :cascade do |t|
+    t.integer "group_id"
+    t.string "title"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -34,6 +41,28 @@ ActiveRecord::Schema.define(version: 2025_09_02_155009) do
     t.float "must_pay"
     t.float "pay"
     t.integer "pay_to_user_id"
+  create_table "item_checks", force: :cascade do |t|
+    t.integer "item_id"
+    t.integer "user_id"
+    t.boolean "is_ok", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.integer "group_id"
+    t.string "name"
+    t.string "remarks"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.integer "event_id"
+    t.date "date"
+    t.string "remarks"
+    t.time "start_time"
+    t.time "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -41,6 +70,18 @@ ActiveRecord::Schema.define(version: 2025_09_02_155009) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.integer "group_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "votes", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "user_id"
+    t.integer "event_id"
+    t.integer "status"
+    t.date "day"
+    t.string "time"
+    t.datetime "start_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

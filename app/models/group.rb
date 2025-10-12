@@ -47,5 +47,8 @@ class Group < ApplicationRecord
 
     settlements
   end
+  
+  has_many :users
+  has_many :items
 
 end

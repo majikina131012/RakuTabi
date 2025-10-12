@@ -101,3 +101,5 @@
 <%= link_to "精算をリセット", destroy_all_group_expenses_path(@group.id), method: :delete, data: { confirm: '本当に全てリセットしますか？' } %>
 
 <%= link_to "明細を見る", group_detail_path(@group.id) %>
+
+<%= link_to "持ち物リスト", group_items_path(@group.id) %>
