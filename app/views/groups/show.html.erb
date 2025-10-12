@@ -1,22 +1,42 @@
-<%= @group.name %>
+<%= render 'header', group: @group %>
 
-<h2>メンバーを追加</h2>
-<%= form_with model: @user, url: group_users_path(@group.id), local: true do |f| %>
-  <div class="form-group">
-    <%= f.label :name, "ユーザー名", class: "form-label" %>
-    <%= f.text_field :name, class: "form-control", required: true %>
+<div class="row justify-content-center text-center">
+  <h2><%= @group.name %></h2>
+</div>
+
+
+<div class="border text-center my-3 translate-middle">
+    <a class="text-dark text-decoration-none" data-toggle="collapse" href="#memberList" role="button" aria-expanded="false" aria-controls="memberList">
+      メンバーを見る
+    </a>
+</div>
+
+
+<div class="collapse" id="memberList">
+  <!-- メンバー一覧 -->
+  <div class="row justify-content-center text-center mb-3">
+    <% @group.users.each do |user| %>
+      <div class="col-xl-1 col-md-2 col-3">
+        <%= user.name %>
+      </div>
+    <% end %>
   </div>
 
-  <%= f.submit "追加する", class: "btn btn-primary btn-block" %>
-<% end %>
+  <div class="row justify-content-center text-center mb-4">
+    <%= form_with model: @user, url: group_users_path(@group.id), local: true do |f| %>
+      <div class="form-row justify-content-center">
+        <div class="col-12 col-md-6 mb-2">
+          <%= f.text_field :name, class: "form-control text-center", required: true, placeholder: "新規メンバー" %>
+        </div>
+        <div class="col-12 col-md-6 mb-2">
+          <%= f.submit "追加する", class: "btn btn-outline-secondary btn-block" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
 
-<h2>メンバー一覧</h2>
-<% @group.users.each do |user| %>
-  <%= user.name %>
-<% end %>
 
-<%= link_to 'スケジュール', group_votes_path(@group.id) %>
-<h2>支払い</h2>
   <% if @expense.errors.any? %>
     <div class="alert alert-danger">
       <h4><%= pluralize(@expense.errors.count, "エラー") %>があります:</h4>
@@ -27,65 +47,78 @@
       </ul>
     </div>
   <% end %>
-
-<%= form_with model: @expense, url: group_expenses_path(@group.id), local: true do |f| %>
-
-  <h3>誰が？</h3>
-  <div class="form-group">
-    <%= f.label :payer_id, "支払った人" %>
-    <%= f.select :payer_id, options_from_collection_for_select(@members, :id, :name), {}, class: "form-control" %>
-  </div>
-
-  <h3>誰に？</h3>
-  <div class="form-group">
-    <%= f.label :members, "割り勘するメンバー" %><br>
-    <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
-      <%= b.check_box(class: "form-check-input", checked: true) %>
-      <%= b.label(class: "form-check-label") %>
-    <% end %>
-  </div>
-
-  <h3>何を？</h3>
-  <div class="form-group">
-    <%= f.label :description, "支払いの内容" %>
-    <%= f.text_field :description, class: "form-control" %>
-  </div>
-
-  <h3>いくら？</h3>
-  <div class="form-group">
-    <%= f.label :amount, "金額" %>
-    <%= f.number_field :amount, class: "form-control" %>
-  </div>
-
-  <%= f.submit "支払った", class: "btn btn-primary btn-block" %>
-
-<% end %>
-
-<h2>精算履歴（最新3件）</h2>
-<% if @expenses.any? %>
-  <% @expenses.each do |expense| %>
-    <ul>
-      <li>
-        <%= expense.payer.name %>が
-
-        <% expense.shares.map(&:user).uniq.each do |user| %>
-          <%= user.name %>に
-        <% end %>
-
-        <%= number_to_currency(expense.amount.round, unit: "円", precision: 0) %>支払った
-
-        <%= link_to edit_group_expense_path(@group.id,expense.id) do %>
-          編集する
-        <% end %>
-      </li>
-    </ul>
-  <% end %>
-<% else %>
-  精算履歴はありません
-<% end %>
-  <%= link_to "履歴を更に見る", group_expenses_path(@group.id) %>
   
-<h2>精算結果</h2>
+  <div class="row justify-content-center text-center">
+    <h4>精算を追加</h4>
+  </div>
+
+  <%= form_with model: @expense, url: group_expenses_path(@group.id), local: true do |f| %>
+    <div class="row justify-content-center text-center">
+
+      <div class="col-5">
+        <div class="form-group">
+          <%= f.select :payer_id, options_from_collection_for_select(@members, :id, :name), {}, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-5">
+        が
+      </div>
+
+    </div>
+    
+    <div class="row justify-content-center text-center">
+    <div class="col-10">
+      <div class="form-group">
+        <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
+          <div class="form-check form-check-inline my-2">
+            <%= b.check_box(class: "form-check-input", style: "transform: scale(1.5); margin-right: 8px;") %>
+            <%= b.label(class: "form-check-label") %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+
+    <div class="row justify-content-center text-center">
+
+      <div class="col-2">
+        の
+      </div>
+
+      <div class="col-8">
+        <div class="form-group">
+          <%= f.text_field :description, class: "form-control w-70 text-center", required: true, placeholder: "ガソリン代" %>
+        </div>
+      </div>
+
+      <div class="col-2">
+        を
+      </div>
+
+    </div>
+
+    <div class="row justify-content-center text-center">
+
+      <div class="col-6">
+        <div class="form-group">
+          <%= f.number_field :amount, class: "form-control text-center", required: true, placeholder: "￥5,000" %>
+        </div>
+      </div>
+
+      <div class="col-1">
+        で
+      </div>
+
+      <div class="col-5">
+        <%= f.submit "支払った", class: "btn btn-outline-secondary btn-block" %>
+      </div>
+
+    </div>
+<% end %>
+
+<h4>精算結果</h4>
 <% if @settlements.present? %>
   <ul class="list-group">
     <% @settlements.each do |s| %>
@@ -96,11 +129,13 @@
     <% end %>
   </ul>
 <% else %>
-  <p>精算は必要ありません。</p>
+  <p>精算は必要ありません</p>
 <% end %>
 
-<%= link_to "精算をリセット", destroy_all_group_expenses_path(@group.id), method: :delete, data: { confirm: '本当に全てリセットしますか？' } %>
+  <div class="row justify-content-center text-center">
+    <div class="col-12">
+      <%= link_to "精算をリセット", destroy_all_group_expenses_path(@group.id), method: :delete, data: { confirm: '本当に全てリセットしますか？' }, class: "btn btn-outline-danger btn-block mt-3" %>
+    </div>
+  </div>
 
-<%= link_to "明細を見る", group_detail_path(@group.id) %>
 
-<%= link_to "持ち物リスト", group_items_path(@group.id) %>

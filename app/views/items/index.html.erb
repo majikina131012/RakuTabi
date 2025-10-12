@@ -32,15 +32,5 @@
   <%= f.text_field :name, placeholder: "新しい持ち物" %>
   <%= f.submit "追加" %>
 <% end %>
-<%= form_with model: @item, url: group_items_path(@group.id), local: true do |f| %>
-
-  <div class="form-group">
-    <%= f.label :name, "持ち物", class: "form-label" %>
-    <%= f.text_field :name, class: "form-control", required: true %>
-  </div>
-
-  <%= f.submit "登録する", class: "btn btn-primary btn-block" %>
-
-<% end %>
 
 <%= link_to "グループに戻る", group_path(@group.id) %>
