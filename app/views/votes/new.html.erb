@@ -1,0 +1,34 @@
+<h1>複数日投票</h1>
+
+<div class="calendar-switch">
+  <%= link_to "週表示", new_group_vote_path(@group, view: "week") %> |
+  <%= link_to "月表示", new_group_vote_path(@group, view: "month") %>
+</div>
+
+<%= form_with url: group_votes_path(@group), method: :post do %>
+  <div>
+    <%= label_tag :user_name, "新規ユーザー名" %>
+    <%= text_field_tag :user_name %>
+  </div>
+
+  <div>
+    <p>既存ユーザーを選択</p>
+    <% @group.users.each do |user| %>
+      <%= check_box_tag "existing_user_ids[]", user.id %> <%= user.name %><br>
+    <% end %>
+  </div>
+
+  <% calendar_method = @calendar_type == "month" ? :month_calendar : :week_calendar %>
+  <%= send(calendar_method) do |date| %>
+    <div class="day-cell">
+      <%= date.day %><br>
+      <%= radio_button_tag "days[#{date}]", "◯" %> ○
+      <%= radio_button_tag "days[#{date}]", "✕" %> ✕
+      <%= radio_button_tag "days[#{date}]", "△" %> △
+    </div>
+  <% end %>
+
+  <%= submit_tag "投票する" %>
+<% end %>
+
+<%= link_to "投票一覧に戻る", group_votes_path(@group.id) %>

@@ -1,0 +1,14 @@
+<div id="vote_buttons_<%= event.id %>">
+  <% ["circle", "triangle", "cross"].each do |s| %>
+    <% user_voted = event.votes.exists?(user_id: current_user.id, status: s) %>
+    <%= link_to group_event_votes_path(event.group_id, event.id, status: s),
+                method: :post,
+                remote: true,
+                data: { "turbolinks" => false } do %>
+      <span style="color: <%= "red" if user_voted %>;">
+        <%= s == "circle" ? "◯" : s == "triangle" ? "△" : "✕" %>
+        (<%= event.votes.where(status: s).count %>)
+      </span>
+    <% end %>
+  <% end %>
+</div>

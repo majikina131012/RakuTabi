@@ -1,12 +1,14 @@
 class User < ApplicationRecord
 
   belongs_to :group
-  has_many :shares
+  has_many :votes
 
-  validates :name, presence: true
+  validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: { scope: :group_id }
   validates :group_id, presence: true
 
-  belongs_to :group
+  
+  has_many :shares
+
   has_many :item_checks
   has_many :items, through: :item_checks
 

@@ -15,6 +15,7 @@
   <%= user.name %>
 <% end %>
 
+<%= link_to 'スケジュール', group_votes_path(@group.id) %>
 <h2>支払い</h2>
   <% if @expense.errors.any? %>
     <div class="alert alert-danger">

@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+ActiveRecord::Schema.define(version: 2025_09_09_023203) do
 ActiveRecord::Schema.define(version: 2025_09_02_155009) do
 
   create_table "expenses", force: :cascade do |t|
