@@ -10,21 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_09_09_023203) do
-ActiveRecord::Schema.define(version: 2025_09_02_155009) do
+ActiveRecord::Schema.define(version: 2025_09_23_102906) do
+
+  create_table "events", force: :cascade do |t|
+    t.integer "group_id"
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "expenses", force: :cascade do |t|
     t.integer "group_id"
     t.integer "payer_id"
     t.string "description"
     t.float "amount"
-ActiveRecord::Schema.define(version: 2025_09_23_102906) do
-
-  create_table "events", force: :cascade do |t|
-    t.integer "group_id"
-    t.string "title"
-    t.datetime "start_time"
-    t.datetime "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -35,13 +34,6 @@ ActiveRecord::Schema.define(version: 2025_09_23_102906) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "shares", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "expense_id"
-    t.float "burden_amount"
-    t.float "must_pay"
-    t.float "pay"
-    t.integer "pay_to_user_id"
   create_table "item_checks", force: :cascade do |t|
     t.integer "item_id"
     t.integer "user_id"
@@ -64,6 +56,17 @@ ActiveRecord::Schema.define(version: 2025_09_23_102906) do
     t.string "remarks"
     t.time "start_time"
     t.time "end_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "shares", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "expense_id"
+    t.float "burden_amount"
+    t.float "must_pay"
+    t.float "pay"
+    t.integer "pay_to_user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
