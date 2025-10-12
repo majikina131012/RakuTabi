@@ -1,0 +1,7 @@
+<h2>グループ一覧</h2>
+
+<% @groups.each do |group| %>
+  <%= link_to group_path(group.id) do %>
+    <%= group.name %>
+  <% end %>
+<% end %>

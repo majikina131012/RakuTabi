@@ -1,0 +1,44 @@
+<h2>持ち物一覧</h2>
+
+<%= form_with url: group_bulk_update_item_checks_path(@group.id), method: :patch, local: true do |f| %>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>持ち物</th>
+        <% @group.users.each do |user| %>
+          <th><%= user.name %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @items.each do |item| %>
+        <tr>
+          <td><%= item.name %></td>
+          <% @group.users.each do |user| %>
+            <% item_check = ItemCheck.find_by(item: item, user: user) %>
+            <td>
+              <%= f.check_box "item_checks[][id]", { checked: item_check.is_ok }, item_check.id, nil %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= f.submit "チェックを入れる", class: "btn btn-primary" %>
+<% end %>
+
+<%= form_with model: Item.new, url: group_items_path(@group), local: true do |f| %>
+  <%= f.text_field :name, placeholder: "新しい持ち物" %>
+  <%= f.submit "追加" %>
+<% end %>
+<%= form_with model: @item, url: group_items_path(@group.id), local: true do |f| %>
+
+  <div class="form-group">
+    <%= f.label :name, "持ち物", class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <%= f.submit "登録する", class: "btn btn-primary btn-block" %>
+
+<% end %>
