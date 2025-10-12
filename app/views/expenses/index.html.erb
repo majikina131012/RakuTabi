@@ -1,28 +1,50 @@
-<h2>精算履歴一覧</h2>
-<% if @expenses.any? %>
+<div class="row">
+  <div class="col-12">
+    <%= render 'groups/header', group: @group %>
+  </div>
+</div>
 
-  <% @expenses.each do |expense| %>
-    <ul>
-      <li>
+<div class="row justify-content-center text-center">
+  <h2>精算履歴一覧</h2>
+</div>
 
-    <%= expense.payer.name %>が
+<div class="row justify-content-center">
+  <% if @expenses.any? %>
+    <% @expenses.each do |expense| %>
+      <div class="col-12 col-md-8 col-lg-6 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <p class="mb-2">
+              <strong><%= expense.payer.name %></strong> が
+            </p>
 
-    <% expense.shares.map(&:user).uniq.each do |user| %>
-      <%= user.name %>に
+            <p class="mb-2">
+              <% expense.shares.map(&:user).uniq.each_with_index do |user, idx| %>
+                <%= user.name %><%= "、" unless idx == expense.shares.map(&:user).uniq.size - 1 %>
+              <% end %> に
+            </p>
+
+            <p class="mb-3">
+              <strong><%= number_to_currency(expense.amount.round, unit: "円", precision: 0) %></strong> 支払った
+            </p>
+
+            <%= link_to edit_group_expense_path(@group.id, expense.id), class: "btn btn-outline-warning" do %>
+              編集
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% end %>
-
-    <%= number_to_currency(expense.amount.round, unit: "円", precision: 0) %>支払った
-
-    <%= link_to edit_group_expense_path(@group.id,expense.id) do %>
-      編集する
-    <% end %>
-
-      </li>
-    </ul>
-  
+  <% else %>
+    <div class="col-12 text-center">
+      <p class="text-muted">精算履歴はありません</p>
+    </div>
   <% end %>
-<% else %>
-  精算履歴はありません
-<% end %>
+</div>
 
-<%= link_to "戻る", group_path(@group.id) %>
+
+<div class="row justify-content-center text-center">
+  <div class="col-12">
+    <%= link_to "戻る", group_path(@group.id), class: "btn btn-outline-secondary mt-3 btn-block" %>
+  </div>
+</div>

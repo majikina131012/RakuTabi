@@ -1,19 +1,20 @@
-<%= render 'header', group: @group %>
+<div class="row">
+  <div class="col-12">
+    <%= render 'header', group: @group %>
+  </div>
+</div>
 
 <div class="row justify-content-center text-center">
   <h2><%= @group.name %></h2>
 </div>
 
 
-<div class="border text-center my-3 translate-middle">
+<div class="border border-primary text-center my-3 translate-middle">
     <a class="text-dark text-decoration-none" data-toggle="collapse" href="#memberList" role="button" aria-expanded="false" aria-controls="memberList">
       メンバーを見る
     </a>
-</div>
-
 
 <div class="collapse" id="memberList">
-  <!-- メンバー一覧 -->
   <div class="row justify-content-center text-center mb-3">
     <% @group.users.each do |user| %>
       <div class="col-xl-1 col-md-2 col-3">
@@ -36,6 +37,7 @@
   </div>
 </div>
 
+</div>
 
   <% if @expense.errors.any? %>
     <div class="alert alert-danger">
@@ -66,19 +68,20 @@
       </div>
 
     </div>
-    
+
     <div class="row justify-content-center text-center">
-    <div class="col-10">
-      <div class="form-group">
-        <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
-          <div class="form-check form-check-inline my-2">
-            <%= b.check_box(class: "form-check-input", style: "transform: scale(1.5); margin-right: 8px;") %>
-            <%= b.label(class: "form-check-label") %>
-          </div>
-        <% end %>
+      <div class="col-10">
+        <div class="form-group">
+          <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
+            <div class="form-check form-check-inline my-2">
+              <%= b.check_box(class: "form-check-input", style: "transform: scale(1.5); margin-right: 8px;", checked: true) %>
+              <%= b.label(class: "form-check-label") %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
+  
   
 
     <div class="row justify-content-center text-center">
@@ -112,29 +115,47 @@
       </div>
 
       <div class="col-5">
-        <%= f.submit "支払った", class: "btn btn-outline-secondary btn-block" %>
+        <%= f.submit "支払った", class: "btn btn-outline-success btn-block" %>
       </div>
 
     </div>
 <% end %>
 
-<h4>精算結果</h4>
+<h4 class="text-center mb-4">精算結果</h4>
+
 <% if @settlements.present? %>
-  <ul class="list-group">
+  <div class="row justify-content-center">
     <% @settlements.each do |s| %>
-      <li class="list-group-item">
-        <%= s[:from].name %> が <%= s[:to].name %> に
-        <%= number_to_currency(s[:amount].ceil, unit: "円", precision: 0) %> 支払う
-      </li>
+      <div class="col-12 col-md-6 col-lg-4 mb-3">
+        <div class="card shadow-sm text-center">
+          <div class="card-body">
+            <p class="mb-1">
+              <strong><%= s[:from].name %></strong> が
+            </p>
+            <p class="mb-1">
+              <strong><%= s[:to].name %></strong> に
+            </p>
+            <p class="mb-0">
+              <strong><%= number_to_currency(s[:amount].ceil, unit: "円", precision: 0) %></strong> 支払う
+            </p>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ul>
+  </div>
 <% else %>
-  <p>精算は必要ありません</p>
+  <p class="text-center text-muted">精算は必要ありません</p>
 <% end %>
 
   <div class="row justify-content-center text-center">
     <div class="col-12">
-      <%= link_to "精算をリセット", destroy_all_group_expenses_path(@group.id), method: :delete, data: { confirm: '本当に全てリセットしますか？' }, class: "btn btn-outline-danger btn-block mt-3" %>
+      <%= link_to "精算履歴", group_expenses_path(@group.id), class: "btn btn-outline-dark btn-block mt-3" %>
+    </div>
+  </div>
+
+  <div class="row justify-content-center text-center">
+    <div class="col-12">
+      <%= link_to "すべての精算をリセット", destroy_all_group_expenses_path(@group.id), method: :delete, data: { confirm: '本当に全てリセットしますか？' }, class: "btn btn-outline-danger btn-block mt-3" %>
     </div>
   </div>
 
