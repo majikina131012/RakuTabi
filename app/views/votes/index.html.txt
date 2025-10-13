@@ -1,0 +1,42 @@
+<div class="row justify-content-center text-center mt-3">
+  <h2>日程候補</h2>
+</div>
+
+<!-- カレンダー部分 -->
+<div class="row justify-content-center">
+  <%= week_calendar events: @votes do |date, votes| %>
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+      <div class="border rounded p-3 text-center h-100">
+        <strong class="d-block mb-2"><%= date.day %>日</strong>
+
+        <% if votes.any? %>
+          <% votes.each do |vote| %>
+            <div><%= vote.user.name %>：<%= vote.status %></div>
+          <% end %>
+        <% else %>
+          <div class="text-muted small">投票なし</div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+<div class="row justify-content-center text-center">
+  <div class="col-12">
+    <%= link_to "投票する", new_group_vote_path(@group), class: "btn btn-outline-success btn-block mt-3 mb-3" %>
+  </div>
+</div>
+
+<h2>◯が多い日</h2>
+<ol>
+  <% @top_votes.each do |vote| %>
+    <li><%= vote.day %>（◯ <%= vote.votes_count %> 件）</li>
+  <% end %>
+</ol>
+
+<div class="row justify-content-center text-center">
+  <div class="col-12">
+    <%= link_to "グループに戻る", group_path(@group.id), class: "btn btn-outline-secondary mt-3 btn-block" %>
+  </div>
+</div>
