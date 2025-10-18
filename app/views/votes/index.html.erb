@@ -1,42 +1,46 @@
-<h3>日程候補</h3>
+<div class="row justify-content-center text-center mt-3">
+  <h2>日程候補</h2>
+</div>
+
 
 <table class="table table-bordered text-center align-middle">
   <thead class="table-light">
     <tr>
       <th>日程</th>
-      <th>◯</th>
-      <th>△</th>
-      <th>✕</th>
+      <th class="text-success">◯</th>
+      <th class="text-warning">△</th>
+      <th class="text-danger">✕</th>
     </tr>
   </thead>
   <tbody>
     <% @votes_by_day.each do |(day, time), votes| %>
-      <tr class="<%= 'table-success' if votes[:maru].any? %>">
-        <td><%= day.strftime('%-m/%-d(%a)') %> <%= time %></td>
+      <% total_members = @group.users.count %>
+        <tr class="<%= 'table-success' if votes[:maru].length == total_members %>">
+          <td><%= day.strftime("%-m/%-d") %>（<%= %w(日 月 火 水 木 金 土)[day.wday] %>） <%= time %></td>
 
-        <td>
-          <% if votes[:maru].any? %>
-            <%= votes[:maru].join('<br>').html_safe %>
-          <% else %>
-            －
-          <% end %>
-        </td>
+          <td>
+            <% if votes[:maru].any? %>
+              <%= votes[:maru].join('<br>').html_safe %>
+            <% else %>
+              －
+            <% end %>
+          </td>
 
-        <td>
-          <% if votes[:sankaku].any? %>
-            <%= votes[:sankaku].join('<br>').html_safe %>
-          <% else %>
-            －
-          <% end %>
-        </td>
+          <td>
+            <% if votes[:sankaku].any? %>
+              <%= votes[:sankaku].join('<br>').html_safe %>
+            <% else %>
+              －
+            <% end %>
+          </td>
 
-        <td>
-          <% if votes[:batsu].any? %>
-            <%= votes[:batsu].join('<br>').html_safe %>
-          <% else %>
-            －
-          <% end %>
-        </td>
+          <td>
+            <% if votes[:batsu].any? %>
+              <%= votes[:batsu].join('<br>').html_safe %>
+            <% else %>
+              －
+            <% end %>
+          </td>
       </tr>
     <% end %>
   </tbody>

@@ -22,6 +22,24 @@ class VotesController < ApplicationController
   
     users_to_vote = ([new_user] + existing_users.to_a).compact.uniq { |u| u.id }
   
+    # バリデーション：ユーザーがいない場合
+    if users_to_vote.empty?
+      flash.now[:alert] = "ユーザーを選択するか、新規メンバー名を入力してください"
+      @vote = @group.votes.new
+      @calendar_type = params[:view] || "week"
+      render :new
+      return
+    end
+  
+    # バリデーション：投票ステータスが入力されていない場合
+    if params[:days].blank?
+      flash.now[:notice] = "少なくとも1日分の投票ステータスを選択してください"
+      @vote = @group.votes.new
+      @calendar_type = params[:view] || "week"
+      render :new
+      return
+    end
+  
     users_to_vote.each do |user|
       params[:days].each do |day, status_str|
         vote = @group.votes.find_or_initialize_by(user: user, day: day)
@@ -32,6 +50,8 @@ class VotesController < ApplicationController
   
     redirect_to group_votes_path(@group), notice: "投票を登録しました"
   end
+  
+  
   
 
   def index

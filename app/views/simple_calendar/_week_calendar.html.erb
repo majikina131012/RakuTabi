@@ -1,47 +1,34 @@
 <div class="simple-calendar">
   <div class="calendar-heading">
     <span class="calendar-title">
-      <%= t('simple_calendar.week', default: 'Week') %>
-      <%= calendar.week_number %>
       <% if calendar.number_of_weeks > 1 %>
         - <%= calendar.end_week %>
       <% end %>
     </span>
 
-    <nav>
-      <%= link_to t('simple_calendar.previous', default: 'Previous'), calendar.url_for_previous_view %>
-      <%= link_to t('simple_calendar.today', default: 'Today'), calendar.url_for_today_view %>
-      <%= link_to t('simple_calendar.next', default: 'Next'), calendar.url_for_next_view %>
+    <nav class="d-flex justify-content-center gap-3 my-2">
+      <%= link_to "前週", calendar.url_for_previous_view, class: "btn btn-outline-secondary btn-sm" %>
+      <%= link_to "今日", calendar.url_for_today_view, class: "btn btn-outline-primary btn-sm mr-5 ml-5" %>
+      <%= link_to "次週", calendar.url_for_next_view, class: "btn btn-outline-secondary btn-sm" %>
     </nav>
+  
   </div>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>時間</th>
-        <% date_range.slice(0, 7).each do |day| %>
-          <th><%= t('date.abbr_day_names')[day.wday] %> (<%= day.day %>)</th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% date_range.each_slice(7) do |week| %>
-        <tr>
-          <td></td>
-          <% week.each do |day| %>
-            <%= content_tag :td, class: calendar.td_classes_for(day) do %>
-              <% instance_exec(day, calendar.sorted_events_for(day), &passed_block) %>
-
+  <div class="week-calendar">
+  <% date_range.each_slice(7) do |week| %>
+    <div class="week row">
+      <% week.each do |day| %>
+        <div class="col-12 col-md-4 mb-3">
+          <div class="border rounded p-3 text-center">
+            <% instance_exec(day, calendar.sorted_events_for(day), &passed_block) %>
+            <div class="border">
               <% @group.votes.where(day: day).each do |vote| %>
-                <div>
-                  <%= vote.user.name %>: <%= vote.status %>
-                </div>
+                <%= vote.user.name %>: <%= vote.status %><br>
               <% end %>
-              
-            <% end %>
-          <% end %>
-        </tr>
+            </div>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  <% end %>
 </div>
