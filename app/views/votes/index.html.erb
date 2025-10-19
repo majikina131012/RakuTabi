@@ -8,7 +8,6 @@
   <h2>日程候補</h2>
 </div>
 
-
 <table class="table table-bordered text-center align-middle">
   <thead class="table-light">
     <tr>
@@ -18,9 +17,11 @@
       <th class="text-danger">✕</th>
     </tr>
   </thead>
+
   <tbody>
-    <% @votes_by_day.each do |(day, time), votes| %>
-      <% total_members = @group.users.count %>
+    <% if @votes_by_day.any? %>
+      <% @votes_by_day.each do |(day, time), votes| %>
+        <% total_members = @group.users.count %>
         <tr class="<%= 'table-success' if votes[:maru].length == total_members %>">
           <td><%= day.strftime("%-m/%-d") %>（<%= %w(日 月 火 水 木 金 土)[day.wday] %>） <%= time %></td>
 
@@ -47,6 +48,13 @@
               －
             <% end %>
           </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="4" class="text-center text-muted py-3">
+          まだ誰も投票していません
+        </td>
       </tr>
     <% end %>
   </tbody>
