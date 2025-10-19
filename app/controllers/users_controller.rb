@@ -1,18 +1,25 @@
 class UsersController < ApplicationController
   def create
     @group = Group.find(params[:group_id])
-    @user = User.new(user_params)
-    @user.group_id = @group.id
-    if @user.save
-      # 🔽 グループ内の全アイテムに対して ItemCheck を作成
-      @group.items.each do |item|
-        ItemCheck.create!(item: item, user: @user, is_ok: false)
-      end
-
-      redirect_to group_path(@group.id)
-    else
-      render :new
+    # 入力欄に「Aさん、Bさん」など複数名が入ることを想定
+    names = params[:user][:name]
+              .split(/[\s,、。]+/)  # 空白・カンマ・句読点で分割
+              .reject(&:blank?)     # 空要素を除外
+  
+    created_users = []
+  
+    names.each do |name|
+      user = @group.users.build(name: name)
+      created_users << user if user.save
     end
+  
+    if created_users.any?
+      flash[:notice] = "#{created_users.map(&:name).join('、')} を追加しました。"
+    else
+      flash[:alert] = "ユーザーを追加できませんでした。"
+    end
+  
+    redirect_to group_path(@group)
   end
 
   private

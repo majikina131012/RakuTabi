@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-12">
-    <%= render 'header', group: @group %>
+    <%= render 'groups/header', group: @group %>
   </div>
 </div>
 
@@ -30,10 +30,11 @@
           <%= f.text_field :name, class: "form-control text-center", required: true, placeholder: "新規メンバー" %>
         </div>
         <div class="col-12 col-md-6 mb-2">
-          <%= f.submit "追加する", class: "btn btn-outline-secondary btn-block" %>
+          <%= f.submit "追加", class: "btn btn-outline-secondary btn-block" %>
         </div>
       </div>
     <% end %>
+    ※コンマ、空白区切りで複数人追加可能です
   </div>
 </div>
 
