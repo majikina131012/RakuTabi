@@ -11,7 +11,7 @@
 
 <div class="border border-primary text-center my-3 translate-middle">
     <a class="text-dark text-decoration-none" data-toggle="collapse" href="#memberList" role="button" aria-expanded="false" aria-controls="memberList">
-      メンバーを見る
+      メンバーの確認・追加
     </a>
 
 <div class="collapse" id="memberList">
@@ -51,11 +51,14 @@
     </div>
   <% end %>
   
-  <div class="row justify-content-center text-center">
-    <h4>精算を追加</h4>
-  </div>
-  <div class="card shadow-sm mb-4">
-    <div class="card-body">
+<div class="row justify-content-center text-center">
+  <h4>精算を追加</h4>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+
+    <% if @group.users.any? %>
       <%= form_with model: @expense, url: group_expenses_path(@group.id), local: true do |f| %>
         <div class="row justify-content-center text-center">
 
@@ -83,11 +86,8 @@
             </div>
           </div>
         </div>
-      
-      
 
         <div class="row justify-content-center text-center">
-
           <div class="col-2">
             の
           </div>
@@ -101,11 +101,9 @@
           <div class="col-2">
             を
           </div>
-
         </div>
 
         <div class="row justify-content-center text-center">
-
           <div class="col-6">
             <div class="form-group">
               <%= f.number_field :amount, class: "form-control text-center", required: true, placeholder: "￥5,000" %>
@@ -119,9 +117,15 @@
           <div class="col-5">
             <%= f.submit "支払った", class: "btn btn-outline-success btn-block" %>
           </div>
-
         </div>
+      <% end %>
+
+    <% else %>
+      <div class="text-center text-muted py-3">
+        上のボタンからメンバーを追加してください
+      </div>
     <% end %>
+
   </div>
 </div>
 

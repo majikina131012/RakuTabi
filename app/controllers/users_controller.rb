@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     end
   
     if created_users.any?
-      flash[:notice] = "#{created_users.map(&:name).join('、')} を追加しました。"
+      flash[:notice] = "#{created_users.map(&:name).join('、')} を追加しました"
     else
       flash[:notice] = "ユーザーを追加できませんでした。"
     end
