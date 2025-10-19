@@ -14,7 +14,9 @@ class ItemsController < ApplicationController
       end
       redirect_to group_items_path(@group.id)
     else
-      @items = Group.items
+      @group = Group.find(params[:group_id])
+      @items = @group.items
+      flash[:notice] = "持ち物を入力してください"
       render :index
     end
   end

@@ -4,6 +4,7 @@ class Group < ApplicationRecord
   has_many :votes
   has_many :users, dependent: :destroy
   has_many :expenses, dependent: :destroy
+  has_many :items, dependent: :destroy
 
   validates :name, presence: true
 

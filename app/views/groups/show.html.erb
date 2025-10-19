@@ -53,73 +53,76 @@
   <div class="row justify-content-center text-center">
     <h4>精算を追加</h4>
   </div>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <%= form_with model: @expense, url: group_expenses_path(@group.id), local: true do |f| %>
+        <div class="row justify-content-center text-center">
 
-  <%= form_with model: @expense, url: group_expenses_path(@group.id), local: true do |f| %>
-    <div class="row justify-content-center text-center">
-
-      <div class="col-5">
-        <div class="form-group">
-          <%= f.select :payer_id, options_from_collection_for_select(@members, :id, :name), {}, class: "form-control" %>
-        </div>
-      </div>
-
-      <div class="col-5">
-        が
-      </div>
-
-    </div>
-
-    <div class="row justify-content-center text-center">
-      <div class="col-10">
-        <div class="form-group">
-          <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
-            <div class="form-check form-check-inline my-2">
-              <%= b.check_box(class: "form-check-input", style: "transform: scale(1.5); margin-right: 8px;", checked: true) %>
-              <%= b.label(class: "form-check-label") %>
+          <div class="col-5">
+            <div class="form-group">
+              <%= f.select :payer_id, options_from_collection_for_select(@members, :id, :name), {}, class: "form-control" %>
             </div>
-          <% end %>
+          </div>
+
+          <div class="col-5">
+            が
+          </div>
+
         </div>
-      </div>
-    </div>
-  
-  
 
-    <div class="row justify-content-center text-center">
-
-      <div class="col-2">
-        の
-      </div>
-
-      <div class="col-8">
-        <div class="form-group">
-          <%= f.text_field :description, class: "form-control w-70 text-center", required: true, placeholder: "ガソリン代" %>
+        <div class="row justify-content-center text-center">
+          <div class="col-10">
+            <div class="form-group">
+              <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
+                <div class="form-check form-check-inline my-2">
+                  <%= b.check_box(class: "form-check-input", style: "transform: scale(1.5); margin-right: 8px;", checked: true) %>
+                  <%= b.label(class: "form-check-label") %>
+                </div>
+              <% end %>
+            </div>
+          </div>
         </div>
-      </div>
+      
+      
 
-      <div class="col-2">
-        を
-      </div>
+        <div class="row justify-content-center text-center">
 
-    </div>
+          <div class="col-2">
+            の
+          </div>
 
-    <div class="row justify-content-center text-center">
+          <div class="col-8">
+            <div class="form-group">
+              <%= f.text_field :description, class: "form-control w-70 text-center", required: true, placeholder: "ガソリン代" %>
+            </div>
+          </div>
 
-      <div class="col-6">
-        <div class="form-group">
-          <%= f.number_field :amount, class: "form-control text-center", required: true, placeholder: "￥5,000" %>
+          <div class="col-2">
+            を
+          </div>
+
         </div>
-      </div>
 
-      <div class="col-1">
-        で
-      </div>
+        <div class="row justify-content-center text-center">
 
-      <div class="col-5">
-        <%= f.submit "支払った", class: "btn btn-outline-success btn-block" %>
-      </div>
+          <div class="col-6">
+            <div class="form-group">
+              <%= f.number_field :amount, class: "form-control text-center", required: true, placeholder: "￥5,000" %>
+            </div>
+          </div>
 
-    </div>
-<% end %>
+          <div class="col-1">
+            で
+          </div>
+
+          <div class="col-5">
+            <%= f.submit "支払った", class: "btn btn-outline-success btn-block" %>
+          </div>
+
+        </div>
+    <% end %>
+  </div>
+</div>
 
 <h4 class="text-center mb-4">精算結果</h4>
 
