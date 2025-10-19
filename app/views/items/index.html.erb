@@ -12,41 +12,57 @@
   <div class="card shadow-sm mb-4">
     <div class="card-body">
 
-<table class="table table-bordered table-striped text-center align-middle">
-  <thead>
-    <tr>
-      <th>持ち物</th>
-      <% @group.users.each do |user| %>
-        <th><%= user.name %></th>
+      <table class="table table-bordered table-striped text-center align-middle">
+        <thead>
+          <tr>
+            <th>持ち物</th>
+            <% @group.users.each do |user| %>
+              <th><%= user.name %></th>
+            <% end %>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if @items.any? %>
+            <% @items.each do |item| %>
+              <tr>
+                <td class="fw-bold">
+                  <%= link_to edit_group_item_path(@group.id, item.id) do %>
+                    <%= item.name %>
+                  <% end %>
+                </td>
+
+                <% @group.users.each do |user| %>
+                  <% item_check = ItemCheck.find_by(item: item, user: user) %>
+                  <td class="text-center align-middle" style="height: 40px;">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                      <%= f.check_box "item_checks[][id]",
+                            { checked: item_check&.is_ok,
+                              class: "form-check-input",
+                              style: "transform: scale(1.5); cursor: pointer;" },
+                            item_check&.id,
+                            nil %>
+                    </div>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="<%= @group.users.count + 1 %>" class="text-center text-muted py-3">
+                持ち物が存在しません
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <% if @items.any? %>
+        <div class="text-center mt-3">
+          <%= f.submit "チェックを更新", class: "btn btn-outline-success btn-block" %>
+        </div>
       <% end %>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @items.each do |item| %>
-      <tr>
-        <td class="fw-bold"><%= link_to edit_group_item_path(@group.id, item.id) do %><%= item.name %><% end %></td>
-        <% @group.users.each do |user| %>
-          <% item_check = ItemCheck.find_by(item: item, user: user) %>
-          <td class="text-center align-middle" style="height: 40px;">
-            <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
-              <%= f.check_box "item_checks[][id]",
-                    { checked: item_check&.is_ok,
-                      class: "form-check-input",
-                      style: "transform: scale(1.5); cursor: pointer;" },
-                    item_check&.id,
-                    nil %>
-            </div>
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-      <div class="text-center mt-3">
-        <%= f.submit "チェックを更新", class: "btn btn-outline-success btn-block" %>
-      </div>
     </div>
   </div>
 <% end %>

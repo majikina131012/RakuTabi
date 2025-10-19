@@ -27,15 +27,15 @@
     <%= form_with model: @user, url: group_users_path(@group.id), local: true do |f| %>
       <div class="form-row justify-content-center">
         <div class="col-12 col-md-6 mb-2">
-          <%= f.text_field :name, class: "form-control text-center", required: true, placeholder: "新規メンバー" %>
+          <%= f.text_field :name, class: "form-control text-center", required: true, placeholder: "新規メンバー（10文字以内）" %>
         </div>
         <div class="col-12 col-md-6 mb-2">
-          <%= f.submit "追加", class: "btn btn-outline-secondary btn-block" %>
+          <%= f.submit "追加", class: "btn btn-outline-primary btn-block" %>
         </div>
       </div>
     <% end %>
-    ※コンマ、空白区切りで複数人追加可能です
   </div>
+  ※コンマ、空白区切りで複数人追加可能です
 </div>
 
 </div>

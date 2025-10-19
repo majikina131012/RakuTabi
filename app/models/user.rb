@@ -3,7 +3,7 @@ class User < ApplicationRecord
   belongs_to :group
   has_many :votes
 
-  validates :name, presence: true, uniqueness: { scope: :group_id }
+  validates :name, presence: true, uniqueness: { scope: :group_id }, length: { maximum: 10 }
   validates :group_id, presence: true
 
   

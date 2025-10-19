@@ -15,6 +15,8 @@ ActiveRecord::Schema.define(version: 2025_09_23_102906) do
   create_table "events", force: :cascade do |t|
     t.integer "group_id"
     t.string "title"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

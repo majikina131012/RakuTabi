@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     if created_users.any?
       flash[:notice] = "#{created_users.map(&:name).join('、')} を追加しました。"
     else
-      flash[:alert] = "ユーザーを追加できませんでした。"
+      flash[:notice] = "ユーザーを追加できませんでした。"
     end
   
     redirect_to group_path(@group)
