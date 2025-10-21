@@ -1,16 +1,176 @@
-<%= @group.name %>
+<div class="row">
+  <div class="col-12">
+    <%= render 'groups/header', group: @group %>
+  </div>
+</div>
 
-<h2>メンバーを追加</h2>
-<%= form_with model: @user, url: group_users_path(@group.id), local: true do |f| %>
-  <div class="form-group">
-    <%= f.label :name, "ユーザー名", class: "form-label" %>
-    <%= f.text_field :name, class: "form-control", required: true %>
+<div class="row justify-content-center text-center">
+  <h2><%= @group.name %></h2>
+</div>
+
+
+<div class="border border-primary text-center my-3 translate-middle">
+    <a class="text-dark text-decoration-none" data-toggle="collapse" href="#memberList" role="button" aria-expanded="false" aria-controls="memberList">
+      メンバーの確認・追加
+    </a>
+
+<div class="collapse" id="memberList">
+  <div class="row justify-content-center text-center mb-3">
+    <% @group.users.each do |user| %>
+      <div class="col-xl-1 col-md-2 col-3">
+        <%= user.name %>
+      </div>
+    <% end %>
   </div>
 
-  <%= f.submit "追加する", class: "btn btn-primary btn-block" %>
+  <div class="row justify-content-center text-center mb-4">
+    <%= form_with model: @user, url: group_users_path(@group.id), local: true do |f| %>
+      <div class="form-row justify-content-center">
+        <div class="col-12 col-md-6 mb-2">
+          <%= f.text_field :name, class: "form-control text-center", required: true, placeholder: "新規メンバー（10文字以内）" %>
+        </div>
+        <div class="col-12 col-md-6 mb-2">
+          <%= f.submit "追加", class: "btn btn-outline-primary btn-block" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  ※コンマ、空白区切りで複数人追加可能です
+</div>
+
+</div>
+
+  <% if @expense.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@expense.errors.count, "エラー") %>があります:</h4>
+      <ul>
+        <% @expense.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+<div class="row justify-content-center text-center">
+  <h4>精算を追加</h4>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+
+    <% if @group.users.any? %>
+      <%= form_with model: @expense, url: group_expenses_path(@group.id), local: true do |f| %>
+        <div class="row justify-content-center text-center">
+
+          <div class="col-5">
+            <div class="form-group">
+              <%= f.select :payer_id, options_from_collection_for_select(@members, :id, :name), {}, class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="col-5">
+            が
+          </div>
+
+        </div>
+
+        <div class="row justify-content-center text-center">
+          <div class="col-10">
+            <div class="form-group">
+              <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
+                <div class="form-check form-check-inline my-2">
+                  <%= b.check_box(class: "form-check-input", style: "transform: scale(1.5); margin-right: 8px;", checked: true) %>
+                  <%= b.label(class: "form-check-label") %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center text-center">
+          <div class="col-2">
+            の
+          </div>
+
+          <div class="col-8">
+            <div class="form-group">
+              <%= f.text_field :description, class: "form-control w-70 text-center", required: true, placeholder: "ガソリン代" %>
+            </div>
+          </div>
+
+          <div class="col-2">
+            を
+          </div>
+        </div>
+
+        <div class="row justify-content-center text-center">
+          <div class="col-6">
+            <div class="form-group">
+              <%= f.number_field :amount, class: "form-control text-center", required: true, placeholder: "￥5,000" %>
+            </div>
+          </div>
+
+          <div class="col-1">
+            で
+          </div>
+
+          <div class="col-5">
+            <%= f.submit "支払った", class: "btn btn-outline-success btn-block" %>
+          </div>
+        </div>
+      <% end %>
+
+    <% else %>
+      <div class="text-center text-muted py-3">
+        上のボタンからメンバーを追加してください
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+<h4 class="text-center mb-4">精算結果</h4>
+
+<% if @settlements.present? %>
+  <div class="row justify-content-center">
+    <% @settlements.each do |s| %>
+      <div class="col-12 col-md-6 col-lg-4 mb-3">
+        <div class="card shadow-sm text-center">
+          <div class="card-body">
+            <p class="mb-1">
+              <strong><%= s[:from].name %></strong> が
+            </p>
+            <p class="mb-1">
+              <strong><%= s[:to].name %></strong> に
+            </p>
+            <p class="mb-0">
+              <strong><%= number_to_currency(s[:amount].ceil, unit: "円", precision: 0) %></strong> 支払う
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-center text-muted">精算は必要ありません</p>
 <% end %>
 
-<h2>メンバー一覧</h2>
-<% @group.users.each do |user| %>
-  <%= user.name %>
+<% if @expenses.any? %>
+  <div class="row justify-content-center text-center">
+    <div class="col-12">
+      <%= link_to "精算履歴", group_expenses_path(@group.id), class: "btn btn-outline-dark btn-block mt-3" %>
+    </div>
+  </div>
+
+  <div class="row justify-content-center text-center">
+    <div class="col-12">
+      <%= link_to "すべての精算をリセット",
+                  destroy_all_group_expenses_path(@group.id),
+                  method: :delete,
+                  data: { confirm: '本当に全てリセットしますか？' },
+                  class: "btn btn-outline-danger btn-block mt-3" %>
+    </div>
+  </div>
 <% end %>
+
+

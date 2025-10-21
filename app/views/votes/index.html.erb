@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col-12">
+    <%= render 'groups/header', group: @group %>
+  </div>
+</div>
+
+<div class="row justify-content-center text-center mt-3">
+  <h2>日程候補</h2>
+</div>
+
+<table class="table table-bordered text-center align-middle">
+  <thead class="table-light">
+    <tr>
+      <th>日程</th>
+      <th class="text-success">◯</th>
+      <th class="text-warning">△</th>
+      <th class="text-danger">✕</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @votes_by_day.any? %>
+      <% @votes_by_day.each do |(day, time), votes| %>
+        <% total_members = @group.users.count %>
+        <tr class="<%= 'table-success' if votes[:maru].length == total_members %>">
+          <td><%= day.strftime("%-m/%-d") %>（<%= %w(日 月 火 水 木 金 土)[day.wday] %>） <%= time %></td>
+
+          <td>
+            <% if votes[:maru].any? %>
+              <%= votes[:maru].join('<br>').html_safe %>
+            <% else %>
+              －
+            <% end %>
+          </td>
+
+          <td>
+            <% if votes[:sankaku].any? %>
+              <%= votes[:sankaku].join('<br>').html_safe %>
+            <% else %>
+              －
+            <% end %>
+          </td>
+
+          <td>
+            <% if votes[:batsu].any? %>
+              <%= votes[:batsu].join('<br>').html_safe %>
+            <% else %>
+              －
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="4" class="text-center text-muted py-3">
+          まだ誰も投票していません
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="row justify-content-center text-center">
+  <div class="col-12">
+    <%= link_to "投票する", new_group_vote_path(@group), class: "btn btn-outline-success btn-block mt-3 mb-3" %>
+  </div>
+</div>
+
+<div class="row justify-content-center text-center">
+  <div class="col-12">
+    <%= link_to "グループに戻る", group_path(@group.id), class: "btn btn-outline-secondary mt-3 btn-block" %>
+  </div>
+</div>

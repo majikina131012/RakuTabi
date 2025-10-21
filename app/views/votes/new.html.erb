@@ -1,0 +1,74 @@
+<div class="row">
+  <div class="col-12">
+    <%= render 'groups/header', group: @group %>
+  </div>
+</div>
+
+<div class="row justify-content-center text-center mt-3">
+  <h2>日程投票</h2>
+</div>
+
+<%= form_with url: group_votes_path(@group), method: :post, local: true do |f| %>
+
+    <div class="form-group">
+    <p class="font-weight-bold">メンバーを選択</p>
+    <div class="border rounded p-2">
+      <% @group.users.each do |user| %>
+        <div class="form-check">
+          <%= check_box_tag "existing_user_ids[]", user.id, false, class: "form-check-input", id: "user_#{user.id}" %>
+          <%= label_tag "user_#{user.id}", user.name, class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :user_name, "新規メンバーがいる場合は以下に入力してください", class: "font-weight-bold" %>
+    <%= text_field_tag :user_name, nil, class: "form-control text-center", placeholder: "ここに名前を入力"%>
+  </div>
+
+  <div class="form-group mt-4">
+
+    <% calendar_method = @calendar_type == "month" ? :month_calendar : :week_calendar %>
+
+      <div class="row">
+        <%= send(calendar_method) do |date| %>
+        <div class="col-12 col-md-4 mb-3">
+          <div class=" rounded p-3 text-center h-100">
+            <p class="fw-bold mb-3"><%= date.strftime("%-m/%-d(#{%w(日 月 火 水 木 金 土)[date.wday]})") %></p>
+
+            <div class="form-check form-check-inline">
+              <%= radio_button_tag "days[#{date}]", "◯", false, class: "form-check-input", id: "day_#{date}_maru" %>
+              <%= label_tag "day_#{date}_maru", "◯", class: "form-check-label text-success", style: "font-size:2rem; cursor:pointer;" %>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <%= radio_button_tag "days[#{date}]", "△", false, class: "form-check-input", id: "day_#{date}_sankaku" %>
+              <%= label_tag "day_#{date}_sankaku", "△", class: "form-check-label text-warning", style: "font-size:2rem; cursor:pointer;" %>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <%= radio_button_tag "days[#{date}]", "✕", false, class: "form-check-input", id: "day_#{date}_batsu" %>
+              <%= label_tag "day_#{date}_batsu", "✕", class: "form-check-label text-danger", style: "font-size:2rem; cursor:pointer;" %>
+            </div>
+          </div>
+
+        </div>
+        <% end %>
+      </div>
+  </div>
+
+  <div class="row justify-content-center text-center">
+    <div class="col-12">
+      <%= f.submit "投票", class: "btn btn-outline-success btn-block" %>
+    </div>
+  </div>
+
+
+<% end %>
+
+<div class="row justify-content-center text-center">
+<div class="col-12">
+  <%= link_to "日程候補に戻る", group_votes_path(@group.id), class: "btn btn-outline-dark btn-block mt-5" %>
+</div>
+</div>

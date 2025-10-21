@@ -1,0 +1,34 @@
+<div class="simple-calendar">
+  <div class="calendar-heading">
+    <span class="calendar-title">
+      <% if calendar.number_of_weeks > 1 %>
+        - <%= calendar.end_week %>
+      <% end %>
+    </span>
+
+    <nav class="d-flex justify-content-center gap-3 my-2">
+      <%= link_to "前週", calendar.url_for_previous_view, class: "btn btn-outline-secondary btn-sm" %>
+      <%= link_to "今日", calendar.url_for_today_view, class: "btn btn-outline-primary btn-sm mr-5 ml-5" %>
+      <%= link_to "次週", calendar.url_for_next_view, class: "btn btn-outline-secondary btn-sm" %>
+    </nav>
+  
+  </div>
+
+  <div class="week-calendar">
+  <% date_range.each_slice(7) do |week| %>
+    <div class="week row">
+      <% week.each do |day| %>
+        <div class="col-12 col-md-4 mb-3">
+          <div class="border rounded p-3 text-center">
+            <% instance_exec(day, calendar.sorted_events_for(day), &passed_block) %>
+            <div class="border">
+              <% @group.votes.where(day: day).each do |vote| %>
+                <%= vote.user.name %>: <%= vote.status %><br>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

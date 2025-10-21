@@ -1,11 +1,30 @@
-<h2>グループを作成</h2>
+<div class="row justify-content-center text-center mt-3">
+  <h2>グループ作成</h2>
+</div>
 
-<%= form_with model: @group, local: true do |f| %>
+<div class='row'>
+  <div class='col-xl-12'>
+  
+    <%= form_with model: @group, local: true do |f| %>
 
-  <div class="form-group">
-    <%= f.label :name, "グループ名", class: "form-label" %>
-    <%= f.text_field :name, class: "form-control", required: true %>
+      <div class="form-group mt-3">
+        <%= f.text_field :name, class: "form-control text-center", required: true, placeholder: "ここにグループ名を入力" %>
+      </div>
+
+      <%= f.submit "作成する", class: "btn btn-outline-success btn-block" %>
+    <% end %>
+
   </div>
+</div>
 
-  <%= f.submit "作成する", class: "btn btn-primary btn-block" %>
-<% end %>
+<div class='row mt-5'>
+  <div class='col-xl-12'>
+    <%= link_to 'グループ一覧', groups_path, class: "btn btn-outline-primary btn-block" %>
+  </div>
+</div>
+
+<div class='row mt-3'>
+  <div class='col-xl-12'>
+    <%= link_to "使い方を見る", about_path, class: "btn btn-outline-secondary btn-block" %>
+  </div>
+</div>

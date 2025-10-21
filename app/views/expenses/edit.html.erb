@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-12">
+    <%= render 'groups/header', group: @group %>
+  </div>
+</div>
+
+<div class="row justify-content-center text-center">
+  <h2>精算内容の編集</h2>
+</div>
+
+<% if @expense.errors.any? %>
+  <div class="alert alert-danger">
+    <h4><%= pluralize(@expense.errors.count, "エラー") %>があります:</h4>
+
+    <ul>
+      <% @expense.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @expense, url: group_expense_path(@group.id,@expense.id), local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :payer_id, "支払った人" %>
+    <%= f.select :payer_id, options_from_collection_for_select(@members, :id, :name), {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :members, "割り勘するメンバー" %><br>
+      <%= f.collection_check_boxes(:user_ids, @members, :id, :name) do |b| %>
+        <div class="form-check form-check-inline my-2">
+          <%= b.check_box(class: "form-check-input", style: "transform: scale(1.5); margin-right: 8px;", checked: true) %>
+          <%= b.label(class: "form-check-label") %>
+        </div>
+      <% end %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, "支払いの内容" %>
+    <%= f.text_field :description, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :amount, "金額" %>
+    <%= f.number_field :amount, class: "form-control", value: f.object.amount.to_f.round %>
+  </div>
+
+  <%= f.submit "変更", class: "btn btn-outline-success btn-block" %>
+
+<% end %>
+
+<div class="row justify-content-center text-center">
+  <div class="col-12">
+    <%= link_to "戻る", group_expenses_path(@group.id), class: "btn btn-outline-secondary btn-block mt-3" %>
+  </div>
+</div>
+
+
+<div class="row justify-content-center text-center">
+  <div class="col-12">
+    <%= link_to "削除", group_expense_path(@group.id, @expense.id), method: :delete, data: { confirm: '本当に精算を削除しますか？' }, class: "btn btn-outline-danger btn-block mt-5" %>
+  </div>
+</div>

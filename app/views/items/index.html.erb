@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col-12">
+    <%= render 'groups/header', group: @group %>
+  </div>
+</div>
+
+<div class="row justify-content-center text-center mt-3">
+  <h2>持ち物チェック</h2>
+</div>
+
+<%= form_with url: group_bulk_update_item_checks_path(@group.id), method: :patch, local: true do |f| %>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+      <table class="table table-bordered table-striped text-center align-middle">
+        <thead>
+          <tr>
+            <th>持ち物</th>
+            <% @group.users.each do |user| %>
+              <th><%= user.name %></th>
+            <% end %>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if @items.any? %>
+            <% @items.each do |item| %>
+              <tr>
+                <td class="fw-bold">
+                  <%= link_to edit_group_item_path(@group.id, item.id) do %>
+                    <%= item.name %>
+                  <% end %>
+                </td>
+
+                <% @group.users.each do |user| %>
+                  <% item_check = ItemCheck.find_by(item: item, user: user) %>
+                  <td class="text-center align-middle" style="height: 40px;">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                      <%= f.check_box "item_checks[][id]",
+                            { checked: item_check&.is_ok,
+                              class: "form-check-input",
+                              style: "transform: scale(1.5); cursor: pointer;" },
+                            item_check&.id,
+                            nil %>
+                    </div>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="<%= @group.users.count + 1 %>" class="text-center text-muted py-3">
+                持ち物が存在しません
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <% if @items.any? %>
+        <div class="text-center mt-3">
+          <%= f.submit "チェックを更新", class: "btn btn-outline-success btn-block" %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+<% end %>
+
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <%= form_with model: Item.new, url: group_items_path(@group), local: true do |f| %>
+      <div class="input-group">
+        <%= f.text_field :name, placeholder: "新しい持ち物", class: "form-control text-center" %>
+        <button type="submit" class="btn btn-outline-primary ml-3">追加</button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<div class="row justify-content-center text-center">
+  <div class="col-12">
+    <%= link_to "グループに戻る", group_path(@group.id), class: "btn btn-outline-secondary mt-3 btn-block" %>
+  </div>
+</div>
