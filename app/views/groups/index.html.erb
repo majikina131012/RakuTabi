@@ -1,7 +1,20 @@
 <h2>グループ一覧</h2>
 
-<% @groups.each do |group| %>
-  <%= link_to group_path(group.id) do %>
-    <%= group.name %>
+<table>
+  <thead>
+    <tr>
+      <th>グループ名</th>
+      <th></th>
+    <tr>
+  </thead>
+  <% @groups.each do |group| %>
+  <tbody>
+    <tr>
+      <td><%= link_to group_path(group.id) do %><%= group.name %><% end %><td>
+      <td><%= link_to "グループ削除", group_path(group.id), method: :delete, data: { confirm: '本当にグループを削除しますか？' }, class: "btn btn-outline-danger btn-block mt-5" %>
+    </tr>
+  <tbody>
   <% end %>
-<% end %>
+</table>
+
+
