@@ -14,14 +14,13 @@
       <div class="col-12 col-md-8 col-lg-6 mb-3">
         <div class="card shadow-sm">
           <div class="card-body text-center">
+            <h4><%= expense.description %></h4>
             <p class="mb-2">
               <strong><%= expense.payer.name %></strong> が
             </p>
 
             <p class="mb-2">
-              <% expense.shares.map(&:user).uniq.each_with_index do |user, idx| %>
-                <%= user.name %><%= "、" unless idx == expense.shares.map(&:user).uniq.size - 1 %>
-              <% end %> に
+              <%= display_recipients(expense) %> に
             </p>
 
             <p class="mb-3">
@@ -42,9 +41,9 @@
   <% end %>
 </div>
 
-
 <div class="row justify-content-center text-center">
   <div class="col-12">
     <%= link_to "戻る", group_path(@group.id), class: "btn btn-outline-secondary mt-3 btn-block" %>
   </div>
 </div>
+ 

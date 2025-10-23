@@ -137,15 +137,9 @@
       <div class="col-12 col-md-6 col-lg-4 mb-3">
         <div class="card shadow-sm text-center">
           <div class="card-body">
-            <p class="mb-1">
-              <strong><%= s[:from].name %></strong> が
-            </p>
-            <p class="mb-1">
-              <strong><%= s[:to].name %></strong> に
-            </p>
-            <p class="mb-0">
-              <strong><%= number_to_currency(s[:amount].ceil, unit: "円", precision: 0) %></strong> 支払う
-            </p>
+            <p><strong><%= s[:from].name %></strong> が</p>
+            <p><strong><%= s[:to].name %></strong> に</p>
+            <p><strong><%= number_to_currency(s[:amount], unit: "円", precision: 0) %></strong> 支払う</p>
           </div>
         </div>
       </div>
