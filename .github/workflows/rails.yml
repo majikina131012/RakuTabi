@@ -8,44 +8,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Deploy
-        env:
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          USER_NAME: ${{ secrets.USER_NAME }}
-          HOST_NAME: ${{ secrets.HOST_NAME }}
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} '
-            set -e
-            cd RakuTabi &&
-            git pull origin main &&
-            ~/.rbenv/shims/bundle install &&
-            
-            # Node.js / Yarn のパス設定
-            export PATH="$HOME/.nodebrew/current/bin:$HOME/.nvm/versions/node/v20.19.5/bin:/usr/local/bin:$PATH"
-
-            echo "Node version: $(node -v || echo not found)"
-            echo "Yarn version (before): $(yarn -v || echo not found)"
-            which yarn || echo "yarn not found in PATH"
-
-            # Yarnが見つからない場合はインストール
-            if ! command -v yarn >/dev/null 2>&1; then
-              echo "Installing Yarn..."
-              corepack enable || true
-              npm install -g yarn
-            fi
-
-            echo "Yarn version (after): $(yarn -v || echo not found)"
-
-            ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production &&
-            ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production &&
-
-            if [[ -e tmp/pids/puma.pid ]]; then
-              sudo kill $(cat tmp/pids/puma.pid)
-              echo "killed existing puma process"
-            fi &&
-
-            ~/.rbenv/shims/rails s -e production
-          '
+    - uses: actions/setup-node@v3
+    - name: Deploy
+      env:
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        USER_NAME: ${{ secrets.USER_NAME }}
+        HOST_NAME: ${{ secrets.HOST_NAME }}
+      run: |
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} 'cd RakuTabi &&
+        git pull origin main &&
+        ~/.rbenv/shims/bundle install &&
+        ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production &&
+        ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production &&
+        if [[ -e tmp/pids/puma.pid ]];then sudo kill $(cat tmp/pids/puma.pid); echo kill puma process;fi &&
+ &nbsp;&nbsp; &nbsp; &nbsp; ~/.rbenv/shims/rails s -e production'
