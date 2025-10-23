@@ -22,20 +22,22 @@ jobs:
             cd RakuTabi &&
             git pull origin main &&
             ~/.rbenv/shims/bundle install --path vendor/bundle &&
-
-            # Node.js / Yarn のパスを通す
-            export PATH="$HOME/.nodebrew/current/bin:$HOME/.nvm/versions/node/v18.18.2/bin:$PATH"
-
-            echo "Node version: $(node -v)"
-            echo "Yarn version: $(yarn -v)"
-
+            # Node.js がなければインストール
+            if ! command -v node >/dev/null 2>&1; then
+              echo "Installing Node.js..."
+              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &&
+              sudo apt-get install -y nodejs
+            fi &&
+            # Yarn がなければインストール
+            if ! command -v yarn >/dev/null 2>&1; then
+              echo "Installing Yarn..."
+              npm install -g yarn
+            fi &&
             ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production &&
             ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production &&
-
             if [[ -e tmp/pids/puma.pid ]]; then
               sudo kill $(cat tmp/pids/puma.pid)
               echo "killed existing puma process"
             fi &&
-
             ~/.rbenv/shims/rails s -e production
           '
