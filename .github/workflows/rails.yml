@@ -21,15 +21,23 @@ jobs:
             set -e
             cd RakuTabi &&
             git pull origin main &&
-            ~/.rbenv/shims/bundle install --path vendor/bundle &&
-
-            # --- Node.js / Yarn のパスを通す ---
-            export PATH="$HOME/.nodebrew/current/bin:$HOME/.nvm/versions/node/v18.18.2/bin:/usr/local/bin:$PATH"
+            ~/.rbenv/shims/bundle install &&
+            
+            # Node.js / Yarn のパス設定
+            export PATH="$HOME/.nodebrew/current/bin:$HOME/.nvm/versions/node/v20.19.5/bin:/usr/local/bin:$PATH"
 
             echo "Node version: $(node -v || echo not found)"
-            echo "Yarn version: $(yarn -v || echo not found)"
+            echo "Yarn version (before): $(yarn -v || echo not found)"
             which yarn || echo "yarn not found in PATH"
-            # ------------------------------------
+
+            # Yarnが見つからない場合はインストール
+            if ! command -v yarn >/dev/null 2>&1; then
+              echo "Installing Yarn..."
+              corepack enable || true
+              npm install -g yarn
+            fi
+
+            echo "Yarn version (after): $(yarn -v || echo not found)"
 
             ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production &&
             ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production &&
