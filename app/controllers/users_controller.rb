@@ -22,6 +22,27 @@ class UsersController < ApplicationController
     redirect_to group_path(@group)
   end
 
+  def edit
+    @group = Group.find(params[:group_id])
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @group = Group.find(params[:group_id])
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      flash[:notice] = "ユーザーの更新に成功しました"
+      redirect_to group_path(@group.id)
+    else
+      render :edit
+    end  
+  end
+
+  def destroy
+    @group = Group.find(params[:group_id])
+    @user = User.find(params[:id])
+  end
+
   private
 
   def user_params
