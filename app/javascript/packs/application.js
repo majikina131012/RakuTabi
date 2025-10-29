@@ -17,7 +17,8 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 
-document.addEventListener("turbolinks:load", () => {
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("JS loaded"); // デバッグ
   const copyButton = document.getElementById("copy-url-btn");
   const copyMessage = document.getElementById("copy-message");
 
@@ -26,9 +27,7 @@ document.addEventListener("turbolinks:load", () => {
       try {
         await navigator.clipboard.writeText(window.location.href);
         copyMessage.style.display = "inline";
-        setTimeout(() => {
-          copyMessage.style.display = "none";
-        }, 2000);
+        setTimeout(() => { copyMessage.style.display = "none"; }, 2000);
       } catch (err) {
         alert("URLのコピーに失敗しました");
       }
