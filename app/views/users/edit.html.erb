@@ -9,9 +9,8 @@
 </div>  
 
   <%= form_with model: @user, url: group_user_path(@group.id, @user.id) do |f| %>
-    <h4>Title</h4>
-    <%= f.text_field :name %>
-    <%= f.submit '更新' %>
+    <h4>名前</h4>
+    <%= f.text_field :name, class: "form-control text-center", placeholder: "名前を入力" %>
+    <%= f.submit '名前の変更', class:"btn btn-outline-success btn-block mt-3" %>
   <% end %>
 
-  <%= link_to "ユーザー削除", group_user_path(@group.id, @user.id), method: :delete, "data-confirm" => "本当にユーザーを削除しますか？"%>

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :groups, only: [:create, :index, :show, :destroy] do
     resources :votes, only: [:new, :create, :index]
     resources :items, only: [:create, :index, :edit, :update, :destroy]
-    resources :users, only: [:create, :edit, :update, :destroy]
+    resources :users, only: [:create, :edit, :update]
     patch 'bulk_update_item_checks', to: 'item_checks#bulk_update'
     get 'detail', to: 'expenses#detail'
     resources :expenses, only: [:create, :index, :edit, :update, :destroy] do

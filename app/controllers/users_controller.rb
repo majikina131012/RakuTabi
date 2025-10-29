@@ -38,10 +38,6 @@ class UsersController < ApplicationController
     end  
   end
 
-  def destroy
-    @group = Group.find(params[:group_id])
-    @user = User.find(params[:id])
-  end
 
   private
 
