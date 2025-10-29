@@ -16,3 +16,22 @@ import "../stylesheets/application";
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+document.addEventListener("turbolinks:load", () => {
+  const copyButton = document.getElementById("copy-url-btn");
+  const copyMessage = document.getElementById("copy-message");
+
+  if (copyButton) {
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        copyMessage.style.display = "inline";
+        setTimeout(() => {
+          copyMessage.style.display = "none";
+        }, 2000);
+      } catch (err) {
+        alert("URLのコピーに失敗しました");
+      }
+    });
+  }
+});

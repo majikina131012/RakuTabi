@@ -4,10 +4,18 @@
   </div>
 </div>
 
-<div class="row justify-content-center text-center">
-  <h2><%= @group.name %></h2>
+<div class="row justify-content-center text-center align-items-center">
+  <div class="col-auto">
+    <h2 class="d-inline-block mb-0"><%= @group.name %></h2>
+  </div>
+  <div class="col-auto">
+    <button id="copy-url-btn" class="btn btn-outline-secondary btn-sm" title="URLをコピー">
+      <i class="fa fa-link"></i>
+    </button>
+    <span id="copy-message" style="display:none; color:green; margin-left:5px;">コピーしました！</span>
+  </div>
 </div>
-
+<div class="text-center">上の<i class="fa fa-link"></i>リンクボタンからリンクをコピーしてLINEなどでメンバーに共有してください</div>
 
 <div class="border border-primary text-center my-3 translate-middle">
     <a class="text-dark text-decoration-none" data-toggle="collapse" href="#memberList" role="button" aria-expanded="false" aria-controls="memberList">
